@@ -14,7 +14,7 @@ ggca(
   type = c("points", "text", "labels"),
   text_repel = FALSE,
   uppercase = "col",
-  tooltips = "row",
+  tooltips = c("row", "col"),
   rowtips_subtitle = "Row pct",
   coltips_subtitle = "Column pct",
   rowcolor_numbers = 0,
@@ -58,7 +58,7 @@ uppercase.}
 
 \item{tooltips}{Choose the content of interactive tooltips at mouse hover :
 \code{"col"} for the table of columns percentages, \code{"row"} for line
-percentages, \code{c("row", "col")} for both.}
+percentages, default to \code{c("row", "col")} for both.}
 
 \item{rowtips_subtitle, coltips_subtitle}{The subtitles used before the table
 in interactive tooltips.}
@@ -111,7 +111,7 @@ res.ca <- FactoMineR::CA(tabs, graph = FALSE)
 
 # Interactive plot :
 graph.ca <- ggca(res.ca,
-                 title = "Race by marical : correspondence analysis",
+                 title = "Race by marital : correspondence analysis",
                  tooltips = c("row", "col"))
 ggi(graph.ca) #to make the plot interactive
 

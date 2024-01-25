@@ -5,7 +5,8 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/BriceNocenti/ggfacto/workflows/R-CMD-check/badge.svg)](https://github.com/BriceNocenti/ggfacto/actions)
+[![R-CMD-check](https://github.com/BriceNocenti/ggfacto/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/BriceNocenti/ggfacto/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
 Readable, complete and pretty graphs for correspondence analysis made
@@ -35,20 +36,28 @@ devtools::install_github("BriceNocenti/ggfacto")
 
 ## Interactive plot from multiple correspondence analysis (MCA)
 
-Make the MCA with FactoMineR :
+Make the MCA (using a wrapper function around `FactoMineR:MCA`) :
 
 ``` r
 library(ggfacto)
 
 data(tea, package = "FactoMineR")
-res.mca <- FactoMineR::MCA(tea, quanti.sup = 19, quali.sup = c(20:36), graph = FALSE)
+res.mca <- MCA2(tea, active_vars = 1:18)
 ```
 
-Make the plot (as a ggplot2 object) :
+Make the plot (as a ggplot2 object) and add a supplementary variable
+(`"SPC"`) :
 
 ``` r
-graph_mca <- ggmca(res.mca, sup_vars = c("SPC", "age_Q")) %>%
+graph_mca <- ggmca(res.mca, tea, sup_vars = "SPC", profiles = TRUE, text_repel = TRUE)
 ```
+
+Use `text_repel = TRUE` to avoid overlapping of text, and obtain a more
+readable image (be careful that, if the plot is overloaded, labels can
+be far away from their original location).
+
+Use `profiles = TRUE` to draw the graph of individuals : one point is
+added for each profile of answers.
 
 Turn the plot interactive :
 
@@ -56,32 +65,47 @@ Turn the plot interactive :
 ggi(graph_mca)
 ```
 
-![](readme_plot.png) If you don’t want interactive usage, you can use
-`text_repel = TRUE` to avoid overlapping of text and obtain a more
-readable image (be careful that, if the plot is overloaded, labels can
-be far away from their original location) :
+![](readme_plot.png)
+
+### See the crosstables of active variables directly on the plot
+
+It is possible to print all crosstables between active variables (burt
+table) into the interactive tooltips. Spread from mean are colored and,
+usually, points near the middle will have less colors, and points at the
+edges will have plenty. It may takes time to print, but really helps to
+interpret the MCA in close proximity with the underlying data.
 
 ``` r
-ggmca(res.mca, sup_vars = c("SPC", "age_Q"), ylim = c(NA, 1.2), text_repel = TRUE)
+ggmca(res.mca, tea, sup_vars = "SPC", active_tables = "active", 
+      ylim = c(NA, 1.2), text_repel = TRUE) %>%
+  ggi()
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+### See the distribution of active variables for each level of a supplementary variable
+
+``` r
+ggmca(res.mca, tea, sup_vars = "SPC", active_tables = "sup", 
+      ylim = c(NA, 1.2), text_repel = TRUE) %>%
+  ggi()
+```
 
 ### Concentration ellipses for each levels of a supplementary variable
 
 ``` r
-ggmca(res.mca, sup_vars = "SPC", ylim = c(NA, 1.2), ellipses = 0.95, text_repel = TRUE, size_scale_max = 4)
+ggmca(res.mca, tea, sup_vars = "SPC", ylim = c(NA, 1.2), ellipses = 0.95, text_repel = TRUE, profiles = TRUE)
+#> colors based on the following categories (rename with colornames_recode): 'SPC_employee', 'SPC_middle', 'SPC_non-worker', 'SPC_other worker', 'SPC_senior', 'SPC_student', 'SPC_workman'
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ### Graph of profiles of answer for each levels of a supplementary variable (with median ellipses containing half the population)
 
 ``` r
-ggmca(res.mca, sup_vars = "SPC", ylim = c(NA, 1.2), type = "facets", ellipses = 0.5, size_scale_max = 4)
+ggmca(res.mca, tea, sup_vars = "SPC", ylim = c(NA, 1.2), type = "facets", ellipses = 0.5, profiles = TRUE)
+#> colors based on the following categories (rename with colornames_recode): 'SPC_employee', 'SPC_middle', 'SPC_non-worker', 'SPC_other worker', 'SPC_senior', 'SPC_student', 'SPC_workman'
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 <!-- ## Table to help to interpret MCA -->
 <!-- ``` {r} -->
@@ -114,7 +138,7 @@ ggca(res.ca,
      text_repel = TRUE, dist_labels = 0.02)
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ## Personnalize plots
 
@@ -125,32 +149,32 @@ necessary data, modify it, then use it to draw the plot :
 library(dplyr)
 library(ggplot2)
 
-plot_data <- ggmca_data(res.mca, sup_vars = "SPC")
+plot_data <- ggmca_data(res.mca, tea, sup_vars = "SPC")
 
-plot_data$sup_vars_coord <- plot_data$sup_vars_coord %>% 
+plot_data$vars_data <- plot_data$vars_data %>% 
   filter(!lvs %in% c("other worker", "non-worker"))
 
-ggmca_plot(plot_data, ylim = c(NA, 1.2), text_repel = TRUE, size_scale_max = 4)
+ggmca_plot(plot_data, ylim = c(NA, 1.2), text_repel = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 The plot can always be modified using the `ggplot2` `+` operator :
 
 ``` r
-ggmca_plot(plot_data, ylim = c(NA, 1.2), size_scale_max = 4) +
+ggmca_plot(plot_data, ylim = c(NA, 1.2)) +
   labs(title = "Multiple correspondence analysis") +
   theme(axis.line = element_line(linetype = "solid") )
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" /> You
-can then pass to plot to `ggi()` to make it interactive
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" /> You
+can then pass to plot to `ggi()` to make it interactive.
 
-You can also set `use_theme = FALSE` to use you own ggplot2 theme :
+Set `use_theme = FALSE` to use you own ggplot2 theme :
 
 ``` r
 ggmca_plot(plot_data, ylim = c(NA, 1.2), use_theme = FALSE) +
   theme_classic()
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />

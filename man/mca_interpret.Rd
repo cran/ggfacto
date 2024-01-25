@@ -4,12 +4,16 @@
 \alias{mca_interpret}
 \title{Helper table to interpret multiple correspondence analysis}
 \usage{
-mca_interpret(res.mca = res.mca, axes = c(1, 2), type = c("html", "console"))
+mca_interpret(
+  res.mca = res.mca,
+  axes = 1:min(res.mca$call$ncp, 5),
+  type = c("html", "console")
+)
 }
 \arguments{
 \item{res.mca}{An object created with \code{FactoMineR::\link[FactoMineR]{MCA}},}
 
-\item{axes}{The axes to interpret, as an integer vector. Default to axes 1 and 2.}
+\item{axes}{The axes to interpret, as an integer vector. Default to the first five axes.}
 
 \item{type}{By default, a html table is printed. Set to \code{"console"} to print in
 console or axes the numbers as a data.frame.}
@@ -30,7 +34,7 @@ of the variance of the question/variable.
 \examples{
 \donttest{
 data(tea, package = "FactoMineR")
-res.mca <- FactoMineR::MCA(tea, quanti.sup = 19, quali.sup = c(20:36), graph = FALSE)
+res.mca <- MCA2(tea, active_vars = 1:18)
 mca_interpret(res.mca)
 }
 }
