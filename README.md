@@ -143,7 +143,7 @@ ggca(res.ca,
 ## Personnalize plots
 
 Step-by-step functions can be used to create a database with all the
-necessary data, modify it, then use it to draw the plot :
+necessary data, modify it, then use it to draw the plot:
 
 ``` r
 library(dplyr)
