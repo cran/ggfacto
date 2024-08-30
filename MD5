@@ -1,7 +1,7 @@
-9e76b21342fdb84c5fe0d6ab2905ef51 *DESCRIPTION
+78efc0af37c99327fcf12615ab843ad9 *DESCRIPTION
 4b6151e097ad01463d4fa3bd49ea1ad3 *NAMESPACE
-a02ea01ba76ea308c41bb67ec91ea30d *NEWS.md
-881153bf6dad727b75da303f14dbecee *R/geometrical_data_analysis.R
+93403dc50382da6fe93e9ddc8ebb1c5d *NEWS.md
+b7d0f544e168f8194d0d8b9e8e79cd31 *R/geometrical_data_analysis.R
 6e87ccfb8c7e94bd4444556c46cdd914 *R/utils.R
 4d09a0113e2956f32f882ce4b2420aad *README.md
 65b248ab2d90292bb192146968229499 *man/HCPC_tab.Rd
@@ -20,12 +20,12 @@ e2aa7cecaddba868fb7c062a9f62472a *man/figures/README-unnamed-chunk-6-1.png
 21312eaccf48f1447630e0a11e4c81c7 *man/figures/README-unnamed-chunk-7-1.png
 54979b2435c27b9efe65c9189c01c0b2 *man/figures/README-unnamed-chunk-8-1.png
 fa86b5241df1905e893e6b746386efaa *man/figures/README-unnamed-chunk-9-1.png
-cd6ffc0fa65d9b0dd1f4077d7c99739a *man/ggca.Rd
+13cb9e0de7994d714b86a48d9e80dcd2 *man/ggca.Rd
 4eaec796a577717e5b4e3a9fecd779ec *man/ggi.Rd
-f2f68bc78afb5558c43f5da37bf4c9dd *man/ggmca.Rd
+4ff8ec4193187b0fb907e8ff61f7d4bb *man/ggmca.Rd
 ac9ed86c092d7b73733fe11108c4d102 *man/ggmca_3d.Rd
-4bde611f3d7efd0029ffabfe250929f1 *man/ggmca_initial_dims.Rd
-d87e20d27f807eec86a03bf4b2598022 *man/ggmca_with_base_ref.Rd
+68c83cacbf823452b126446eedc049ed *man/ggmca_initial_dims.Rd
+9382cf0d0bff6214484ae4e7a117c64d *man/ggmca_with_base_ref.Rd
 80744ea59576a7ff985e3a108665a685 *man/ggpca_3d.Rd
 4c199caace37f1f4badb54600e567f89 *man/ggpca_cor_circle.Rd
 64e377d16cba048e53ddd1e5fc301cb7 *man/ggsave2.Rd

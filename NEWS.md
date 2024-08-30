@@ -1,3 +1,8 @@
+# ggfacto 0.3.1
+
+## Bug correction
+* `HCPC_tab()` was not working well with numeric variables.
+
 
 # ggfacto 0.3.0
 

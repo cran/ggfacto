@@ -1,6 +1,6 @@
 Package: ggfacto
 Title: Graphs for Correspondence Analysis
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
     person(given = "Brice",
            family = "Nocenti",
@@ -18,7 +18,7 @@ URL: https://github.com/BriceNocenti/ggfacto
 BugReports: https://github.com/BriceNocenti/ggfacto/issues
 License: GPL (>= 3)
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: FactoMineR (>= 2.0.0), ggiraph (>= 0.8.2), ggplot2 (>= 3.0.0),
         dplyr (>= 1.0.0), forcats (>= 0.5.0), purrr (>= 0.3.0), rlang
         (>= 0.4.0), stringr (>= 1.4.0), tibble (>= 3.0.0), tidyr (>=
@@ -31,8 +31,8 @@ Suggests: widgetframe (>= 0.3.0), htmlwidgets (>= 1.4.0), finalfit (>=
         4.0.0), grDevices (>= 4.0.0), stringi (>= 1.4.6), scales (>=
         1.1.0)
 NeedsCompilation: no
-Packaged: 2024-03-08 21:46:19 UTC; Brice
+Packaged: 2024-08-30 14:07:25 UTC; Brice
 Author: Brice Nocenti [aut, cre]
 Maintainer: Brice Nocenti <brice.nocenti@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-03-08 22:00:05 UTC
+Date/Publication: 2024-08-30 15:00:02 UTC
