@@ -5961,8 +5961,14 @@ HCPC_tab <- function(data, row_vars = character(), clust, wt,
                                         pct = dplyr::if_else(pct == "row", "col", "row"),
                                         wt = !!wt,
                                         na = "drop", cleannames = TRUE, color = color,
-                                        levels = first_lvs,
-                                        ...) |>
+                                        levels = first_lvs, #, add_n = FALSE,
+                                        ...)
+  if (pct == "row") {
+    cah_actives_tab <- cah_actives_tab |> dplyr::select(-tidyselect::any_of(c("n")))
+  } else if (pct == "col") {
+    cah_actives_tab <- cah_actives_tab |> dplyr::filter(!clust == "n")
+  }
+  cah_actives_tab <- cah_actives_tab |>
     dplyr::rename_with(~ dplyr::if_else(stringr::str_detect(., "Total_", ), "Total", .)) |>
     dplyr::relocate(.data$Total, .after = tidyselect::last_col()) |>
     dplyr::mutate(
@@ -6892,8 +6898,12 @@ interactive_tooltips <- function(dat,
                            na       = "drop",
                            wt       = "row.w",
                            pct      = "row",
-                           color    = "diff"
-        )
+                           color    = "diff"#,
+                           #add_n    = FALSE # ,
+        ) |>
+          purrr::map(
+            ~ dplyr::select(., -tidyselect::any_of(c("n")))
+          )
       })
 
 
@@ -6917,7 +6927,8 @@ interactive_tooltips <- function(dat,
                            row_vars = tidyselect::all_of(vars[!vars %in% active_tables]),
                            na       = "drop",
                            wt       = "row.w",
-                           pct      = "col"
+                           pct      = "col"#,
+                           #add_n    = FALSE # ,
         )
       })
 
@@ -6927,7 +6938,7 @@ interactive_tooltips <- function(dat,
       purrr::map(
         ~ dplyr::rename_with(., ~ "lvs", 1) %>%
           dplyr::rename_with(~ dplyr::if_else(stringr::str_detect(., "^Total_"), "Total", .)) %>%
-          dplyr::select(-tidyselect::any_of("n")) %>%
+          #dplyr::select(-tidyselect::any_of("n")) %>%
           dplyr::filter(!.data$lvs == "Remove_levels")
       )
   }
@@ -7082,10 +7093,20 @@ interactive_tooltips <- function(dat,
                   lvs  = dplyr::if_else(stringr::str_detect(.data$lvs, "^Total"),
                                         true  = factor("Central point", c(levels(.data$lvs), "Central point")),
                                         false = .data$lvs)
-    ) %>%
-    dplyr::mutate(n     = vctrs::field(.data$Total, "n"),
-                  Total = vctrs::field(.data$Total, "wn")) %>%
-    dplyr::rename("wcount" = "Total") %>%
+    )
+
+  if ("n" %in% names(interactive_text) & "wn" %in% names(interactive_text)) {
+    interactive_text <- interactive_text %>%
+      dplyr::mutate(wn = vctrs::field(.data$wn, "wn"))  |>
+      dplyr::rename("wcount" = "wn")
+  } else if ("Total" %in% names(interactive_text)) {
+    interactive_text <- interactive_text %>%
+      dplyr::mutate(n     = vctrs::field(.data$Total, "n"),
+                    Total = vctrs::field(.data$Total, "wn")) |>
+      dplyr::rename("wcount" = "Total")
+  }
+
+  interactive_text <- interactive_text %>%
     dplyr::mutate(actives_text = dplyr::if_else(vars %in% active_tables,
                                                 true  = "\n<b>Active variables:</b>",
                                                 false = NA_character_)) %>%
